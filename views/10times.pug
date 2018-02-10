@@ -1,0 +1,6 @@
+extends layout
+
+block content
+  form(action="/10times", method="post")
+    input(type="text", name="item")
+    button(type="submit") send!

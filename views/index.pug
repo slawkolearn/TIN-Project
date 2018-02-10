@@ -1,0 +1,6 @@
+extends layout
+
+block content
+    form(action="/logout", method="post")
+        button.logoutButton(type="submit") Wyloguj #{username}
+    
