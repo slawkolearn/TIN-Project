@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const dbController = require('../controllers/databaseConnectionController');
+const localDiskController = require('../controllers/localDiskController');
 
 router.get('/hello', (req, res) => {
   res.render('hello');
@@ -27,6 +28,7 @@ router.get('/register', (req, res) => {
 
 router.post('/register', 
   dbController.create_new_user,
+  localDiskController.createUserFolder,
   (req, res) => {
     console.log(req.body);
     res.redirect('/hello');

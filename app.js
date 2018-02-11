@@ -13,6 +13,7 @@ app.set('view engine', 'pug');
 const mainRoutes = require('./routes');
 const authenticationRoutes = require('./routes/authentication');
 const testRoutes = require('./routes/tests');
+const imagesUploads = require('./routes/imagesUploads');
 
 const portnumber = 8000;
 
@@ -27,6 +28,7 @@ app.use(cookieParser());
 app.use(mainRoutes);
 app.use(authenticationRoutes);
 app.use(testRoutes);
+app.use('/uploadImage', imagesUploads);
 
 // do renderowania rooutingu który nie istnieje
 app.use((req, res, next) => {
