@@ -52,3 +52,4 @@ app.listen(portnumber, () => {
 // TODO:SL zalogowany użytkownik może dodać obrazek w site (na stronie swojego profilu)
 // TODO:SL zalogowany użytkonik może przeglądać różne profile (w tym swój - osobna funkcjonalność swojego profilu)
 // TODO:SL zalogowany użytkownik może likować/delikować cudze obrazki (może też pokochać ?? )
+// TODO:SL nie pozwalaj dodawania niepoprawnych danych do bazy danych

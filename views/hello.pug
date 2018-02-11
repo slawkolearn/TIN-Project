@@ -1,7 +1,9 @@
 extends layout
 
 block content
-  form(action="/", method="post")
+  if error 
+    p.error= error
+  form(action="/authenticateUser", method="post")
     label(for="username") Proszę podaj swój nick i hasło:
     br
     input(type="text", name="username" id="username")

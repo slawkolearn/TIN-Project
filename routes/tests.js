@@ -35,8 +35,9 @@ router.post('/10times', (req, res) => {
 
 router.get('/getdata', (req, res) => {
   db.serialize(() => {
-    db.each('SELECT rowid AS id, item FROM tester', (err, row) => {
+    db.each('SELECT * FROM tester', (err, row) => {
       console.log(row.id + ' ' + row.item);
+      console.log(row);
     });
   });
 
