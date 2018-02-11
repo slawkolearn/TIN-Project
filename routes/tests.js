@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
 
 const sqlite3 = require('sqlite3').verbose();
 var db = new sqlite3.Database('./db/test.db', sqlite3.OPEN_CREATE | sqlite3.OPEN_READWRITE , (err) => {
@@ -54,6 +55,36 @@ function closeDatabase(){
 }
 
 // do not know how to close db connection when application is closing
+
+// -- fileuploads tests
+
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.fieldname + '-' + Date.now() + '.jpg')
+  }
+})
+
+var upload = multer({ storage: storage }).single('upload');
+
+router.get('/profile', (req, res) => {
+  res.render('upload-test');
+});
+
+router.post('/profile',  (req, res) => {
+  console.log("uploading...");
+  upload(req, res, function (err) {
+    if (err) {
+      // An error occurred when uploading
+      return
+    }
+
+    // Everything went fine
+    res.send("ok");
+  })
+});
 
 
 module.exports = router;

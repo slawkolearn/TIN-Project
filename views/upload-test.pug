@@ -1,0 +1,6 @@
+extends layout
+
+block content
+  form(action="/profile", method="post", enctype="multipart/form-data")
+    input(type="file", name="upload")
+    button(type="submit") Wyślij!
