@@ -13,7 +13,10 @@ app.set('view engine', 'pug');
 const mainRoutes = require('./routes');
 const authenticationRoutes = require('./routes/authentication');
 const testRoutes = require('./routes/tests');
-const imagesUploads = require('./routes/imagesUploads');
+const imagesUploadsRoutes = require('./routes/imagesUploads');
+const loggedInUserRoutes = require('./routes/loggedInUser');
+
+app.use(express.static('uploads'))
 
 const portnumber = 8000;
 
@@ -27,11 +30,14 @@ app.use(cookieParser());
 
 app.use(mainRoutes);
 app.use(authenticationRoutes);
+app.use('/logged', loggedInUserRoutes);
 app.use(testRoutes);
-app.use('/uploadImage', imagesUploads);
+app.use('/uploadImage', imagesUploadsRoutes);
 
 // do renderowania rooutingu który nie istnieje
+// TODO:SL czasami wyzwala się ten błąd samoistnie??
 app.use((req, res, next) => {
+    console.log("BRAK ROUTINGU !! : " + req.originalUrl);
     const err = new Error('Nie znaleziono zasobu!')
     err.status = 404;
     next(err);
@@ -40,6 +46,7 @@ app.use((req, res, next) => {
 // obsługa błędów
 app.use((err, req, res, next) => {
     console.log("handling error");
+    console.log("err.message : " + err.message);
     res.locals.error = err;
     res.status(err.status);
     res.render('error');

@@ -26,7 +26,7 @@ router.get('/register', (req, res) => {
   res.render('register');
 });
 
-router.post('/register', 
+router.post('/register',
   dbController.create_new_user,
   localDiskController.createUserFolder,
   (req, res) => {

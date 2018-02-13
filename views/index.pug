@@ -1,11 +1,14 @@
 extends layout
 
 block content
-    form(action="/logout", method="post")
-        button.logoutButton(type="submit") Wyloguj #{username}
-    br
+    if message
+        include includes/message.pug
     a.imageAddLink(href='/uploadImage') Dodaj obrazek
     br
     br
-    h2 Witaj, 
+    h2 Witaj, #{username}
+    br
+    a(href=`/logged/wall/${username}`) Pokaż moje obrazki    
+    br
+    a(href=`/logged/showUsers`) Pokaż użytkowników
     

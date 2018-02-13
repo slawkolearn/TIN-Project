@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 
+const dbController = require('../controllers/databaseConnectionController');
+const localDiskController = require('../controllers/localDiskController');
+
 const sqlite3 = require('sqlite3').verbose();
 var db = new sqlite3.Database('./db/test.db', sqlite3.OPEN_CREATE | sqlite3.OPEN_READWRITE , (err) => {
   if(err) {
@@ -86,5 +89,29 @@ router.post('/profile',  (req, res) => {
   })
 });
 
+// usuwanie bazy danych aplikacji
+
+router.get('/clearDatabase', (req, res) => {
+  dbController.clearAppDB();  
+  dbController.createAppTables();
+
+  res.send("ok");
+});
+
+
+// pokaż obrazek na serwerze
+// ok
+router.get('/showImages', (req, res) => {
+  var imagesLocation = ['slawko/pieselek-1518454370722.jpg', 'slawko/pieselek-1518454370722.jpg'];
+  res.render('image-test',  {  imagesLocation } );
+});
+
+
+router.get('/showTableContents/:table',
+  (req, res) => {
+    dbController.show_current_table_state(req.params.table);
+   res.send("ok");
+  }
+);
 
 module.exports = router;
