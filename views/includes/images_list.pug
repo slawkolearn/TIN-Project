@@ -10,7 +10,7 @@ div.imagesWallContainer
         p.imageDesc= `${image.desc}`
         // TODO:SL think about how to show image rating...
         p.imageRating= `Rating obrazka: ${image.rating}`        
-        if calling_user !== image.owner && calling_user
+        if calling_user !== image.owner && calling_user && image.voted === 'negative'
           p.imageOwner= `uploadował: ${image.owner}`
           form(action=`/logged/rate/${image.owner}/${image.id}/positive`, method="post")
             button(type="submit") Lubię

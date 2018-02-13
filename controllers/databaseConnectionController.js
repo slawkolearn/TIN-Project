@@ -6,6 +6,7 @@ var db = new sqlite3.Database('./db/picappsite.db', sqlite3.OPEN_CREATE | sqlite
   console.log('Connected to the picappsite database');
 }) ;
 
+// -------------------------- checkers --------------------
 
 exports.check_if_user_exists = (req, res, next) => {
   console.log("checking if user exists");
@@ -47,6 +48,8 @@ exports.check_user_password = (req, res, next) => {
   });
 }
 
+// ----------------- creaters -----------------
+
 exports.create_new_user = (req, res, next) => {
   console.log("create_new_user new user: ");
   console.log(req.body);
@@ -62,67 +65,7 @@ exports.add_new_picture_entry = (req, res, next) => {
   console.log("username cookie: " + req.cookies.username);
   add_new_picture(req.body);
   next();
-};
-
-exports.get_user_images_to_request = (req, res, next) => {
-  var user_images = [];
-  db.serialize( () => {
-    db.each(`SELECT * FROM pictures WHERE owner='${req.params.user}'`, (err, row) => {
-      console.log("user images::");
-      console.log(row);
-      user_images.push(row);
-    }, (err, number_of_rows) => {
-      console.log("Returning:");
-      console.log(user_images);
-      req.body.images = user_images;
-      next();
-    });
-    console.log("Finishing get_user_images select sequence");
-  });
-};
-
-exports.get_registered_users_to_request = (req, res, next) => {
-  var users = [];
-  db.serialize( () => {
-    db.each(`SELECT username, email, joined FROM users`, 
-    (err, row) => {
-      users.push(row);
-    }
-    , (err, number_of_rows) => {
-      req.body.users = users;
-      next();
-    });
-  });
-};
-
-exports.rate_picture = (req, res, next) => {
-  db.serialize( () => {
-    db.exec(`UPDATE pictures SET rating = rating ` + (
-      req.params.how === 'positive' ? '+' : '-'
-    ) + `1 WHERE id=${req.params.what}`)
-  });
-  next();
-}
-
-//-----------
-function create_users_table_if_not_exists(){
-  console.log("Creating USERS table...");
-  db.serialize( () => {
-    db.run('CREATE TABLE IF NOT EXISTS users (username TEXT PRIMARY KEY NOT NULL, email TEXT, password TEXT, joined TEXT)');
-    console.log("done");
-  });
-}
-
-function create_pictures_table_if_not_exists(){
-  console.log("Creating PICTURES table...");
-  db.serialize( () => {
-    // TODO:SL add sqlite table connection with USERS and PICTURES (picture belongs to user)
-    db.run('CREATE TABLE IF NOT EXISTS pictures (id INTEGER PRIMARY KEY AUTOINCREMENT, location_on_server TEXT NOT NULL,name TEXT NOT NULL, desc TEXT, date_added TEXT NOT NULL, rating INTEGER NOT NULL, owner TEXT NOT NULL)');
-    console.log("done");
-  });
-}
-
-function add_new_user(new_user){
+};function add_new_user(new_user){
   db.serialize( () => {
     var stmt = db.prepare(`INSERT INTO users VALUES(?,?,?,DateTime('now'))`);
     stmt.run(new_user.username, new_user.email, new_user.password);
@@ -140,11 +83,119 @@ function add_new_picture(new_picure){
   });
 }
 
+function add_new_userPictureRating(new_rating){
+  console.log("new_rating ADDED: ");
+  console.log(new_rating);
+  db.serialize( () => {
+    var stmt = db.prepare(`INSERT INTO userPictureRating VALUES(?,?,DateTime('now'))`);
+    stmt.run(new_rating.id, new_rating.username);
+    stmt.finalize();
+  });
+}
+
+
+// ----------- getters -----------------------
+
+exports.get_user_images_to_request = (req, res, next) => {
+  var user_images = [];
+  db.serialize( () => {
+    db.each(`SELECT * FROM pictures WHERE owner='${req.params.user}'`, (err, row) => {
+      console.log("user images::");
+      console.log(row);     
+      console.log(" Setting voted negative flag");
+      row.voted = 'negative';
+      // db.run(`SELECT id FROM userPictureRating WHERE id=${row.id} AND username='${req.cookies.username}'`, (err, row) =>{
+      //   console.log("found. Setting voted positive flag");
+      //   row.voted = 'positive';
+      // });
+      user_images.push(row);
+    }, (err, number_of_rows) => {
+      console.log("Returning:");
+      console.log(user_images);
+      req.body.images = user_images;  
+
+      db.serialize( () => {
+        user_images.forEach((image, index, arr) => {
+          console.log(`SELECT * FROM userPictureRating WHERE id=${image.id} AND username='${req.cookies.username}'`);
+          db.run(`SELECT * FROM userPictureRating WHERE id=${image.id} AND username='${req.cookies.username}'`, (err, row) => {
+            if( row ){
+              image.voted = 'positive';
+              console.log("positive set");
+              console.log(row);
+              console.log(err);
+              console.log("Calling next in getting images");
+            };
+            if( index + 1 >= arr.length ) next()
+          });
+        });
+        // next();
+      });
+
+      
+    });
+
+    console.log("Finishing get_user_images select sequence");
+    
+  });
+};
+
+exports.get_registered_users_to_request = (req, res, next) => {
+  var users = [];
+  db.serialize( () => {
+    db.each(`SELECT username, email, joined FROM users`, 
+    (err, row) => {
+      users.push(row);
+    }
+    , (err, number_of_rows) => {
+      req.body.users = users;
+      next();
+    });
+  });
+};
+
+// ------------------ updaters --------------------
+
+exports.rate_picture = (req, res, next) => {
+  db.serialize( () => {
+    db.exec(`UPDATE pictures SET rating = rating ` + (
+      req.params.how === 'positive' ? '+' : '-'
+    ) + `1 WHERE id=${req.params.what}`);
+  });
+  var new_rating = {
+    id: req.params.what,
+    username: req.cookies.username
+  };
+  add_new_userPictureRating(new_rating);
+  next();
+}
+
+//----------- database table oparations  ------------------------------
+function create_users_table_if_not_exists(){
+  console.log("Creating USERS table...");
+  db.serialize( () => {
+    db.run('CREATE TABLE IF NOT EXISTS users (username TEXT PRIMARY KEY NOT NULL, email TEXT, password TEXT, joined TEXT)');
+    console.log("done");
+  });
+}
+
+function create_pictures_table_if_not_exists(){
+  console.log("Creating PICTURES table...");
+  db.serialize( () => {
+    // TODO:SL add sqlite table connection with USERS and PICTURES (picture belongs to user)
+    db.run('CREATE TABLE IF NOT EXISTS pictures (id INTEGER PRIMARY KEY AUTOINCREMENT, location_on_server TEXT NOT NULL,name TEXT NOT NULL, desc TEXT, date_added TEXT NOT NULL, rating INTEGER NOT NULL, owner TEXT NOT NULL)');
+    console.log("done");
+  });
+}
+
+function create_userPictureRating_table_if_not_exists(){
+  console.log("Creating userPictureRating table...");
+  db.serialize( () => {
+    db.run('CREATE TABLE IF NOT EXISTS userPictureRating (id INTEGER NOT NULL, username TEXT NOT NULL, date_added TEXT NOT NULL, PRIMARY KEY (id, username))');
+    console.log("done");
+  });
+}
+
 exports.show_current_table_state = show_current_table_state;
-
-
-
-//// ----- helpers
 
 function show_current_table_state(table){
   db.serialize( () => {
@@ -171,7 +222,7 @@ function dropAppTable (table_name) {
 
 exports.clearAppDB = () => {
   console.log("Clearing app database...");
-  var app_tables = ['user', 'users','pictures'];
+  var app_tables = ['user', 'users','pictures', 'userPictureRating'];
   for( let app_table of app_tables ) {
     dropAppTable(app_table);
   }
@@ -184,6 +235,7 @@ exports.createAppTables = () => {
   db.serialize( () => {
     create_users_table_if_not_exists();
     create_pictures_table_if_not_exists();
+    create_userPictureRating_table_if_not_exists();
     console.log('done');
   });
 };

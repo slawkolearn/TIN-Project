@@ -56,8 +56,8 @@ app.listen(portnumber, () => {
     console.log(`App is listening on localhost:${portnumber}`);
 });
 
-// TODO:SL zaloguj/zarejestruj użytkownika
-// TODO:SL zalogowany użytkonik może się wylogować
+// TODO:SL zalogowany użytkonik może się wylogowa
+// TODO:SL zaloguj/zarejestruj użytkownikać
 // TODO:SL zalogowany użytkownik może dodać obrazek w site (na stronie swojego profilu)
 // TODO:SL zalogowany użytkonik może przeglądać różne profile (w tym swój - osobna funkcjonalność swojego profilu)
 // TODO:SL zalogowany użytkownik może likować/delikować cudze obrazki (może też pokochać ?? )
