@@ -10,14 +10,20 @@ const app = express();
 // standardowo wszystkich tamplatesów będzie szukał w folderze 'views'
 app.set('view engine', 'pug');
 
-const mainRoutes = require('./routes');
+const mainRoutes = require('./routes'); // bez nazwy -> defaultowo szuka pliku index ;)
 const authenticationRoutes = require('./routes/authentication');
 const testRoutes = require('./routes/tests');
 const imagesUploadsRoutes = require('./routes/imagesUploads');
 const loggedInUserRoutes = require('./routes/loggedInUser');
 
+// ustawiamy foldery obsługiwane przez expressa i ścieżki "widziane" dla końcowych użytkowników
+// dla multera
 app.use(express.static('uploads'))
+// dla statycznych zasobów
+app.use('/static', express.static('public'));
 
+
+// na tym porcie apka będzie słuchała requestów
 const portnumber = 8000;
 
 // MIDDLEWARES
@@ -28,6 +34,7 @@ app.use(bodyParser.urlencoded( { extended: false }));
 // musimy powiedzieć apce że używamy parsera cookie
 app.use(cookieParser());
 
+// routing
 app.use(mainRoutes);
 app.use(authenticationRoutes);
 app.use('/logged', loggedInUserRoutes);
@@ -44,6 +51,8 @@ app.use((req, res, next) => {
 });
 
 // obsługa błędów
+// jeżeli jakiś middleware wywoła next z errorem next(error) to ten middleware zostanie wykonany
+// tu po prostu wyświetlamy stronę z komunikatem o błedzie
 app.use((err, req, res, next) => {
     console.log("handling error");
     console.log("err.message : " + err.message);
@@ -52,13 +61,15 @@ app.use((err, req, res, next) => {
     res.render('error');
 });
 
+// uruchamiamy aplikacje
 app.listen(portnumber, () => {
     console.log(`App is listening on localhost:${portnumber}`);
 });
 
-// TODO:SL zalogowany użytkonik może się wylogowa
-// TODO:SL zaloguj/zarejestruj użytkownikać
-// TODO:SL zalogowany użytkownik może dodać obrazek w site (na stronie swojego profilu)
-// TODO:SL zalogowany użytkonik może przeglądać różne profile (w tym swój - osobna funkcjonalność swojego profilu)
 // TODO:SL zalogowany użytkownik może likować/delikować cudze obrazki (może też pokochać ?? )
+    // TODO:SL error : strona nie ładuję się gdy brak obrazków dla danego użytkownika
+        // prawdopodobnie nie wołana funckja next() w dbCOntrollerze
 // TODO:SL nie pozwalaj dodawania niepoprawnych danych do bazy danych
+    // nie do końca skończone
+// TODO:SL na wallu z obrazkami wyświetlaj możliwość głosowania na obrazki tylko tych na które zalogowany użytkownik nie głosował
+    // ALBO daj info że już na ten obrazek głosował

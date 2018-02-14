@@ -12,9 +12,10 @@ div.imagesWallContainer
         p.imageRating= `Rating obrazka: ${image.rating}`        
         if calling_user !== image.owner && calling_user && image.voted === 'negative'
           p.imageOwner= `uploadował: ${image.owner}`
-          form(action=`/logged/rate/${image.owner}/${image.id}/positive`, method="post")
-            button(type="submit") Lubię
-          form(action=`/logged/rate/${image.owner}/${image.id}/negative`, method="post")
-            button(type="submit") Nie Lubię
+          div.ratingButtonContainer
+            form(action=`/logged/rate/${image.owner}/${image.id}/positive`, method="post")
+              button.likeButton(type="submit") Lubię
+            form(action=`/logged/rate/${image.owner}/${image.id}/negative`, method="post")
+              button.dislikeButton(type="submit") Nie Lubię
   else
     p.infoParagraph Brak Obrazków dla #{name_of_wall_owner}

@@ -1,3 +1,6 @@
 header 
-  h1 HEADER
-  a.homePageLink(href=`/`) Strona Główna
+  h1 
+    a(href='/')
+      img.mainAppLogo(src="/static/img/logo.png", alt="Logo Strony PicAppSite")
+  if calling_user
+    a.homePageLink(href=`/`) Strona Główna

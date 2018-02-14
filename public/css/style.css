@@ -1,0 +1,167 @@
+/*
+Whole page
+*//*
+Background page color
+*/
+body {
+  background-color: #E4EEF0;
+  display: flex;
+  flex-flow: column nowrap;
+  text-align: center;
+  font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
+}
+
+
+.homePageLink{
+	text-decoration: none;
+  color: blueviolet;
+  font-size: 25px;
+}
+
+.homePageLink:hover{
+  color: coral;
+  font-size: 25px;
+  transition: all 0.3s;
+}
+
+
+
+@media screen and ( max-width: 899px ){		
+  .imagesWallContainer{ 
+    display: flex;
+    flex-flow: column nowrap;	
+    justify-content: center;
+  }
+}
+
+@media screen and ( min-width: 900px ) { 	/* jeżeli dostępna szerokość jest min 1000px  i max 1199px */
+  .imagesWallContainer{ 
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+  }
+}
+
+
+
+.ratingButtonContainer{
+	display: flex;														
+  flex-flow: row nowrap;
+  justify-content: center;
+}
+
+.singleImageWallContainer{
+  padding: 25px 20px 20px 25px;
+}
+
+.logoutButton{
+  margin-top: 50px;
+  background-color: #E4EEF0;
+  border: 2px #D64226 solid;
+  font-size: 1em;
+  padding: 8px 10px;
+  color: #D64226;
+  font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
+}
+
+.logoutButton:hover{
+  background-color: #D64226;
+  color: #fff;
+  cursor: pointer;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+.likeButton{
+  border-radius: 25px;
+  min-width: 100px;
+  margin-top: 50px;
+  background-color: #E4EEF0;
+  border: 2px rgb(9, 184, 47) solid;
+  font-size: 1em;
+  padding: 8px 10px;
+  color: rgb(9, 184, 47);
+  font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
+}
+
+.likeButton:hover{
+  border-radius: 25px;
+  margin-left: 10px;
+  min-width: 150px;
+  background-color:rgb(9, 184, 47);
+  color: #fff;
+  cursor: pointer;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+.dislikeButton{
+  border-radius: 25px;
+  margin-left: 10px;
+  min-width: 100px;
+  margin-top: 50px;
+  background-color: #E4EEF0;
+  border: 2px #D64226 solid;
+  font-size: 1em;
+  padding: 8px 10px;
+  color: #D64226;
+  font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
+}
+
+.dislikeButton:hover{
+  border-radius: 25px;
+  min-width: 150px;
+  background-color: #D64226;
+  color: #fff;
+  cursor: pointer;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+.mainAppLogo{
+  max-width: 450px;
+}
+
+.userLink{
+	text-decoration: none;
+  color: blueviolet;
+  font-size: 15px;  
+}
+
+.userLink:hover{
+	text-decoration: none;
+  color: coral;
+  font-size: 17px;
+  transition: all 0.3s;
+}
+
+.userListContainer{
+  padding: 20px 10px 10px 20px;
+}
+
+.singleUserLinkContainer{
+  min-height: 20px;
+}
+
+/*TODO:SL dodaj iconki zamiast standartowych bulletów*/
+#uploadImageItem{
+  list-style-type: square;
+}
+
+#showMinePicturesItem{
+  list-style-type: disc;
+}
+
+#showOtherUsersItem{
+  list-style-type: armenian;
+}
+
+.greetingText{
+  color:rgb(128, 27, 141);
+}

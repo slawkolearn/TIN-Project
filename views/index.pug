@@ -3,12 +3,12 @@ extends layout
 block content
     if message
         include includes/message.pug
-    a.imageAddLink(href='/uploadImage') Dodaj obrazek
-    br
-    br
-    h2 Witaj, #{username}
-    br
-    a(href=`/logged/wall/${username}`) Pokaż moje obrazki    
-    br
-    a(href=`/logged/showUsers`) Pokaż użytkowników
+    h2.greetingText Witaj, #{username}!
+    ul
+        li#uploadImageItem
+            a.imageAddLink(href='/uploadImage') Dodaj obrazek
+        li#showMinePicturesItem
+            a(href=`/logged/wall/${username}`) Pokaż moje obrazki    
+        li#showOtherUsersItem
+            a(href=`/logged/showUsers`) Pokaż użytkowników
     

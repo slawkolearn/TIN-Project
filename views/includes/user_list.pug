@@ -1,5 +1,5 @@
 div.userListContainer
 each user in registered_users
-  div.userContainer
+  div.singleUserLinkContainer
     if calling_user !== user.username
-      a(href=`/logged/wall/${user.username}`) #{user.username}
+      a.userLink(href=`/logged/wall/${user.username}`) #{user.username}
