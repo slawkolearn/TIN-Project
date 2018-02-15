@@ -1,8 +1,6 @@
 extends layout
 
 block content
-  if error 
-    p.error= error
   form(action="/authenticateUser", method="post")
     label.formLabel(for="username") Proszę podaj swój nick i hasło:
     br

@@ -23,7 +23,13 @@ exports.check_if_user_exists = (req, res, next) => {
         next();
       }else{
         // TODO:SL przepisz to żeby przekazać błąd i przekierowywać na /hello z błedem wyświetlanym
-        res.render('hello', {error: `Użytkownik ${req.body.username} nie istnieje`} ) ;
+        var message;
+        if(req.body.username === ''){
+          message = 'Podaj nazwę użytkownika';
+        }else{
+          message =  `Użytkownik ${req.body.username} nie istnieje`;
+        }
+        res.render('hello', {message: message } ) ;
       }
     });
     console.log("finish checking users existance");
@@ -41,8 +47,13 @@ exports.check_user_password = (req, res, next) => {
                 console.log(row);
                 if( row ) {
                   next();
-                }else{
-                  res.render('hello', { error: `Hasło dla ${req.body.username} nie jest poprawne`} );
+                }else{        
+                  if(req.body.password === ''){
+                    message = 'Hasło nie może być puste';
+                  }else{
+                    message =  `Hasło ${req.body.password} dla ${req.body.username} nie jest poprawne`;
+                  }
+                  res.render('hello', { message: message} );
                 }
               });
   });
