@@ -65,7 +65,9 @@ exports.add_new_picture_entry = (req, res, next) => {
   console.log("username cookie: " + req.cookies.username);
   add_new_picture(req.body);
   next();
-};function add_new_user(new_user){
+};
+
+function add_new_user(new_user){
   db.serialize( () => {
     var stmt = db.prepare(`INSERT INTO users VALUES(?,?,?,DateTime('now'))`);
     stmt.run(new_user.username, new_user.email, new_user.password);
@@ -83,13 +85,21 @@ function add_new_picture(new_picure){
   });
 }
 
-function add_new_userPictureRating(new_rating){
+function add_new_userPictureRating(new_rating, next){
   console.log("new_rating ADDED: ");
   console.log(new_rating);
   db.serialize( () => {
-    var stmt = db.prepare(`INSERT INTO userPictureRating VALUES(?,?,DateTime('now'))`);
-    stmt.run(new_rating.id, new_rating.username);
-    stmt.finalize();
+    db.run(`INSERT INTO userPictureRating VALUES(?,?,DateTime('now'))`,
+    [ new_rating.id, new_rating.username ],
+    (err) => {
+      console.log("you already voted votedvotedvotedvotedvotedvotedvotedvotedvotedvotedvotedvotedvoted");
+      const error = new Error("Już głosowałeś na ten obrazek !! ");    
+      err.status = 404;
+      next(error);
+    });
+    // var stmt = db.prepare(`INSERT INTO userPictureRating VALUES(?,?,DateTime('now'))`);
+    // stmt.run(new_rating.id, new_rating.username);
+    // stmt.finalize();
   });
 }
 
@@ -158,18 +168,41 @@ exports.get_registered_users_to_request = (req, res, next) => {
 
 // ------------------ updaters --------------------
 
-exports.rate_picture = (req, res, next) => {
-  db.serialize( () => {
-    db.exec(`UPDATE pictures SET rating = rating ` + (
-      req.params.how === 'positive' ? '+' : '-'
-    ) + `1 WHERE id=${req.params.what}`);
-  });
-  var new_rating = {
+exports.rate_picture = (req, res, next) => {    
+   var new_rating = {
     id: req.params.what,
     username: req.cookies.username
   };
-  add_new_userPictureRating(new_rating);
-  next();
+  console.log("staring rating picture:");
+  db.serialize( () => {
+    const stmt = `INSERT INTO userPictureRating VALUES(${new_rating.id},'${new_rating.username}',DateTime('now'));
+                  UPDATE pictures SET rating=rating${ req.params.how === 'positive' ? '+' : '-' }1 WHERE id=${req.params.what}`;
+    db.exec(stmt, (err) => {
+     if(err){
+       console.log(err.message);
+      console.log("NIE UDAŁO SIĘ DODAĆ GŁOSU");
+      req.body.message = "Już głosowałeś na ten obrazek";
+      next();
+     } else {
+       console.log("UDAŁO SIĘ DODAĆ GŁOSU");
+       req.body.message = "Dziękuję za oddany głos";
+       next();
+     }
+    });
+  });
+  // var new_rating = {
+  //   id: req.params.what,
+  //   username: req.cookies.username
+  // };
+  // let added_rating = add_new_userPictureRating(new_rating, next);
+  // if(added_rating){ 
+  //   db.serialize( () => {
+  //     db.exec(`UPDATE pictures SET rating = rating ` + (
+  //         req.params.how === 'positive' ? '+' : '-'
+  //       ) + `1 WHERE id=${req.params.what}`);
+  //   });
+  // }
+  // next();
 }
 
 //----------- database table oparations  ------------------------------

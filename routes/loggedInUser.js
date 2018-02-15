@@ -11,7 +11,7 @@ router.get('/wall/:user',
     console.log("WHAT I HAVE:");
     console.log(req.body.images);
     //console.log(req.body.images[0].location_on_server);
-    res.render('user_wall', { images: req.body.images, name_of_wall_owner: req.params.user });
+    res.render('user_wall', { images: req.body.images, name_of_wall_owner: req.params.user , message: req.query.message });
   }
 );
 
@@ -28,7 +28,7 @@ router.post('/rate/:whos/:what/:how',
   dbController.rate_picture,
   (req, res) => {
     console.log(req.originalUrl);
-    res.redirect(`/logged/wall/${req.params.whos}`);
+    res.redirect(`/logged/wall/${req.params.whos}?message=${req.body.message}`);
   }
 );
 

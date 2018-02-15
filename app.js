@@ -55,7 +55,10 @@ app.use((req, res, next) => {
 // tu po prostu wyświetlamy stronę z komunikatem o błedzie
 app.use((err, req, res, next) => {
     console.log("handling error");
-    console.log("err.message : " + err.message);
+    console.log('-===========================-');
+    console.log(err);
+    console.log('-------------------------');
+    console.log("errss.message : " + err.message);
     res.locals.error = err;
     res.status(err.status);
     res.render('error');
