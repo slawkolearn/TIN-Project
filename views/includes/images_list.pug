@@ -5,17 +5,17 @@ div.imagesWallContainer
   if images_count > 0
     each image in images
       div.singleImageWallContainer
-        img(src=image.location_on_server, alt="", srcset="")
+        img.wallImage(src=image.location_on_server, alt="", srcset="")
         p.imageName= `${image.name}`
         p.imageDesc= `${image.desc}`
         // TODO:SL think about how to show image rating...
-        p.imageRating= `Rating obrazka: ${image.rating}`        
+        p(class=`${  image.rating === 0 ? 'imageRatingNeutral' : ( image.rating > 0 ? 'imageRatingPositive': 'imageRatingNegative') }`)= `Rating obrazka: ${image.rating}`        
         if calling_user !== image.owner && calling_user && image.voted === 'negative'
-          p.imageOwner= `uploadował: ${image.owner}`
           div.ratingButtonContainer
             form(action=`/logged/rate/${image.owner}/${image.id}/positive`, method="post")
               button.likeButton(type="submit") Lubię
             form(action=`/logged/rate/${image.owner}/${image.id}/negative`, method="post")
               button.dislikeButton(type="submit") Nie Lubię
+          p.imageOwner= `uploadował: ${image.owner}`
   else
-    p.infoParagraph Brak Obrazków dla #{name_of_wall_owner}
+    p.message Brak Obrazków dla #{name_of_wall_owner}

@@ -165,3 +165,115 @@ body {
 .greetingText{
   color:rgb(128, 27, 141);
 }
+
+.errorMessage{
+  color: red;
+}
+
+/* FORM */
+
+.formLabel, .message{
+  color: rgb(71, 71, 71);
+}
+
+
+.formInput{
+  margin-top: 10px;
+  border: 2px inset rgb(75, 75, 75);
+  color:rgb(75, 75, 75);
+  background-color:rgba(255, 254, 255, 0.589);
+}
+
+.formButton{
+  margin-top: 20px;
+  margin-right: 5px;
+  min-width: 150px;
+  padding:5px 15px; 
+  border:0 none;
+  cursor:pointer;
+  border-radius: 5px; 
+  background-color: rgb(61, 61, 61);
+}
+
+.formButton:hover{
+  background-color: rgb(75, 75, 75);
+}
+
+.fileChooser{
+  border:0 none;
+  cursor:pointer;
+  border-radius: 5px; 
+  margin-top: 20px;
+  margin-right: 5px;
+  min-width: 200px;
+  background-color: rgb(61, 61, 61);
+  color: #FFF;
+}
+
+
+/* header*/
+
+header{
+}
+
+/* main content */
+
+.mainContent{
+}
+
+/* footer */
+
+.footerParagraph{
+   color: rgba(137, 106, 141, 0.425);
+}
+
+footer{
+}
+
+  /*  user wall page */
+
+.imageName{
+  font-size: 50px;
+  color:  rgb(61, 61, 61);
+}
+
+.imageDesc{
+  font-size: 15px;
+  color:  rgb(61, 61, 61);
+}
+
+.imageRatingNeutral{
+  color:grey;
+}
+
+.imageRatingPositive{
+  color:rgb(21, 114, 21);
+}
+
+.imageRatingNegative{
+  color:rgb(143, 14, 14);
+}
+
+.imageOwner{
+  color:rgba(63, 39, 87, 0.5);
+  font-size: 25px;
+}
+
+
+@media screen and ( max-width: 899px ){		
+  .wallImage{
+    max-width: 500px;
+  }
+}
+
+@media screen and ( min-width: 900px ){		
+  .wallImage{
+    max-width: 400px;
+  }
+}
+
+@media screen and ( min-width: 1200px ){		
+  .wallImage{
+    max-width: 500px;
+  }
+}

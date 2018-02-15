@@ -2,3 +2,6 @@ extends layout
 
 block content
   h1.errorMessage= error.message
+
+  form(action="/", method="get")
+    button.formButton(type="submit") Strona Główna

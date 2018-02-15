@@ -3,4 +3,5 @@ header
     a(href='/')
       img.mainAppLogo(src="/static/img/logo.png", alt="Logo Strony PicAppSite")
   if calling_user
-    a.homePageLink(href=`/`) Strona Główna
+    if !error
+      a.homePageLink(href=`/`) Strona Główna

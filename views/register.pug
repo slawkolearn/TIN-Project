@@ -1,21 +1,26 @@
 extends layout
 
 block content
-  form(action="/register", method="post")
-    label(for="username") Podaj swój nick
+  form#registerForm(action="/register", method="post")
+    label.formLabel(for="username") Podaj swój nick
     br
-    input(type="text", name="username")
+    input.formInput(type="text", name="username")
     br
-    label(for="email") Podaj swój email
+    label.formLabel(for="email") Podaj swój email
     br
-    input(type="email", name="email")
+    input.formInput(type="email", name="email")
 
     br 
-    label(for="password") Podaj swoje hasło:
+    label.formLabel(for="password") Podaj swoje hasło:
     br
-    input(type="password", name="password")
+    input.formInput(type="password", name="password")
 
     br
-    button(type="submit") Zarejestruj!
-    button(type="reset") Wyczyść formularz!
+    button.formButton(type="submit") Zarejestruj!
+    button.formButton(type="reset") Wyczyść formularz!
+
+  form(action="/", method="get")
+    button.formButton(type="submit") Anuluj
+
+  
 

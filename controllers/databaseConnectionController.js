@@ -115,6 +115,8 @@ exports.get_user_images_to_request = (req, res, next) => {
       req.body.images = user_images;  
 
       db.serialize( () => {
+        console.log("user_images.length() = " + user_images.length);
+        if(user_images.length === 0) next();
         user_images.forEach((image, index, arr) => {
           console.log(`SELECT * FROM userPictureRating WHERE id=${image.id} AND username='${req.cookies.username}'`);
           db.run(`SELECT * FROM userPictureRating WHERE id=${image.id} AND username='${req.cookies.username}'`, (err, row) => {
@@ -148,6 +150,7 @@ exports.get_registered_users_to_request = (req, res, next) => {
     }
     , (err, number_of_rows) => {
       req.body.users = users;
+      console.log("get_registered_users_to_request next() is called");
       next();
     });
   });

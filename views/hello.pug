@@ -4,11 +4,11 @@ block content
   if error 
     p.error= error
   form(action="/authenticateUser", method="post")
-    label(for="username") Proszę podaj swój nick i hasło:
+    label.formLabel(for="username") Proszę podaj swój nick i hasło:
     br
-    input(type="text", name="username" id="username")
+    input.formInput(type="text", name="username" id="username")
     br
-    input(type="password", name="password" id="password")
+    input.formInput(type="password", name="password" id="password")
     br
     button.formButton(type="submit") Zaloguj
   br

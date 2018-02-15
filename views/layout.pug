@@ -5,8 +5,10 @@ html(lang="pl")
     link(rel="stylesheet", href="/static/css/style.css")
   body
     if calling_user   
-      form(action="/logout", method="post")
+      if !error
+        form(action="/logout", method="post")
           button.logoutButton(type="submit") Wyloguj #{calling_user}
     include includes/header.pug
-    block content
+    div.mainContent
+      block content
     include includes/footer.pug
