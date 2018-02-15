@@ -48,6 +48,7 @@ exports.check_user_password = (req, res, next) => {
                 if( row ) {
                   next();
                 }else{        
+                  var message = '';
                   if(req.body.password === ''){
                     message = 'Hasło nie może być puste';
                   }else{
