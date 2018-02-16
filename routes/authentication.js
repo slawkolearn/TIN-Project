@@ -4,6 +4,7 @@ const router = express.Router();
 // kontrolery do obsługi bazy danych i systemu plików na serwerze
 const dbController = require('../controllers/databaseConnectionController');
 const localDiskController = require('../controllers/localDiskController');
+const dataValidator = require('../validators/incomingDataValidator');
 
 // dla ściezki /hello renderuj stronę powitalną
 router.get('/hello', (req, res) => {
@@ -42,6 +43,7 @@ router.get('/register', (req, res) => {
 // TODO:SL dodaj przekierowanie do strony z formularzem kiedy użytkownik z username już istnieje
 // logika obsługi rejestracji
 router.post('/register',
+  dataValidator.validateNewUserData,
   dbController.create_new_user,
   localDiskController.createUserFolder,
   (req, res) => {
