@@ -170,6 +170,18 @@ body {
   color: red;
 }
 
+@media screen and (max-width: 899px){
+  .errorMessage{
+    font-size: 15px;
+  }
+}
+
+@media screen and (min-width: 900px){
+  .errorMessage{
+    font-size: 25px;
+  }
+}
+
 /* FORM */
 
 .formLabel, .message{

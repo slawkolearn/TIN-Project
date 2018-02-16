@@ -54,10 +54,10 @@ app.use((req, res, next) => {
 // jeżeli jakiś middleware wywoła next z errorem next(error) to ten middleware zostanie wykonany
 // tu po prostu wyświetlamy stronę z komunikatem o błedzie
 app.use((err, req, res, next) => {
-    console.log("handling error");
-    console.log('-===========================-');
-    console.log(err);
-    console.log('-------------------------');
+    // console.log("handling error");
+    // console.log('-===========================-');
+    // console.log(err);
+    // console.log('-------------------------');
     console.log("errss.message : " + err.message);
     res.locals.error = err;
     res.status(err.status);
@@ -69,9 +69,6 @@ app.listen(portnumber, () => {
     console.log(`App is listening on localhost:${portnumber}`);
 });
 
-// TODO:SL zalogowany użytkownik może likować/delikować cudze obrazki (może też pokochać ?? )
-    // TODO:SL error : strona nie ładuję się gdy brak obrazków dla danego użytkownika
-        // prawdopodobnie nie wołana funckja next() w dbCOntrollerze
 // TODO:SL nie pozwalaj dodawania niepoprawnych danych do bazy danych
     // nie do końca skończone
 // TODO:SL na wallu z obrazkami wyświetlaj możliwość głosowania na obrazki tylko tych na które zalogowany użytkownik nie głosował

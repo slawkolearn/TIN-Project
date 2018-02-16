@@ -20,6 +20,10 @@ function addPasswordRequirementsMessages(password, errorMessageAdderFunction) {
   if ( password.length < 4 ) {
     errorMessageAdderFunction("Hasło musi składać się przynajmniej z 4 znaków");
   }
+
+  if (password.replace(/\s/g,'').length !== password.length ) {
+    errorMessageAdderFunction("Hasło nie może posiadać białych znaków!");
+  }
 }
 
 function sufficientPasword(password){
@@ -28,6 +32,8 @@ function sufficientPasword(password){
   } else if ( password.search(/[0-9]/) < 0 ) {
     return false;
   } else if ( password.length < 4 ){
+    return false;
+  } else if( password.replace(/\s/g,'').length !== password.length ){
     return false;
   }
   return true;
@@ -74,11 +80,7 @@ registrationForm.register.onclick = () => {
 
   // hasło użytkownika
   // TODO:SL jakieś minimanlne hasło może ??
-  registrationForm.password.value = registrationForm.password.value.trim();
-  if ( registrationForm.password.value === '' ) {
-    addErrorMessage("Hasło nie może być puste!!");
-    result = false;
-  } else if ( !sufficientPasword(registrationForm.password.value ) ){
+  if ( !sufficientPasword(registrationForm.password.value ) ){
     addPasswordRequirementsMessages(registrationForm.password.value, addErrorMessage);
     result = false;
   }
