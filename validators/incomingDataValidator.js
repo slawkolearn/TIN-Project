@@ -1,3 +1,5 @@
+const helpers = require('../helpers/helpers');
+
 const html_new_line = '<br />';
 
 // funkcja sparwdzająca czy string jest adresem email

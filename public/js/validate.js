@@ -21,7 +21,7 @@ function addPasswordRequirementsMessages(password, errorMessageAdderFunction) {
     errorMessageAdderFunction("Hasło musi składać się przynajmniej z 4 znaków");
   }
 
-  if (password.replace(/\s/g,'').length !== password.length ) {
+  if ( !containsWhiteSpaces(password)) {
     errorMessageAdderFunction("Hasło nie może posiadać białych znaków!");
   }
 }
@@ -33,7 +33,8 @@ function sufficientPasword(password){
     return false;
   } else if ( password.length < 4 ){
     return false;
-  } else if( password.replace(/\s/g,'').length !== password.length ){
+  } else if( !containsWhiteSpaces(password) ){
+    alert("return false");
     return false;
   }
   return true;
@@ -89,3 +90,9 @@ registrationForm.register.onclick = () => {
 
   return result; // zwracamy true/false -> to z kolei zdeterminuje czy wyślemy dalej formularz czy nie
 };
+
+// required helpers - > figure out how to use the same functions on the server and client (like this helper function(s)
+
+function containsWhiteSpaces(text){
+  return text.replace(/\s/g,'').length !== text.length ;
+}
