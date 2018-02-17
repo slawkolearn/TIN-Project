@@ -6,6 +6,10 @@ var db = new sqlite3.Database('./db/picappsite.db', sqlite3.OPEN_CREATE | sqlite
   console.log('Connected to the picappsite database');
 }) ;
 
+// dla generowania i sprawdzenia hasła
+var bcrypt = require('bcrypt');
+const saltRounds = 10;
+
 // -------------------------- checkers --------------------
 
 exports.check_if_user_exists = (req, res, next) => {
@@ -38,23 +42,33 @@ exports.check_if_user_exists = (req, res, next) => {
 
 exports.check_user_password = (req, res, next) => { 
   console.log("checking users password");
-  var passwordMatches = false;
+  console.log(req.body);
+
   db.serialize( () => {
-     // TODO:SL check if password matches 
-     db.get(`SELECT * FROM users WHERE username='${req.body.username}' AND password='${req.body.password}'`,
+     // TODO:SL check if password matches  
+     // Load hash from your password DB.
+     // załaduj hash hasła z bazy
+    console.log("checking new password:" + req.body.password +":");
+     db.get(`SELECT password FROM users WHERE username='${req.body.username}'`,
               (err, row) => {
                 console.log("check_user_password pass check::");
                 console.log(row);
                 if( row ) {
-                  next();
-                }else{        
-                  var message = '';
-                  if(req.body.password === ''){
-                    message = 'Hasło nie może być puste';
-                  }else{
-                    message =  `Hasło ${req.body.password} dla ${req.body.username} nie jest poprawne`;
-                  }
-                  res.render('login', { message: message, hide_login_button: true } );
+                  // sprawdzamy podane hasło
+                  bcrypt.compare(req.body.password, row.password, function(err, password_match) {
+                    if(password_match){             
+                      next();
+                    }else{      
+                                  
+                      var message = '';
+                      if(req.body.password === ''){
+                        message = 'Hasło nie może być puste';
+                      }else{
+                        message =  `Hasło ${req.body.password} dla ${req.body.username} nie jest poprawne`;
+                      }
+                      res.render('login', { message: message, hide_login_button: true } );
+                    }
+                  });     
                 }
               });
   });
@@ -98,9 +112,23 @@ exports.add_new_picture_entry = (req, res, next) => {
 
 function add_new_user(new_user){
   db.serialize( () => {
-    var stmt = db.prepare(`INSERT INTO users VALUES(?,?,?,DateTime('now'))`);
-    stmt.run(new_user.username, new_user.email, new_user.password);
-    stmt.finalize();
+    console.log("putting new password:" + new_user.password+":");
+    bcrypt.genSalt(saltRounds, function(err, salt) {
+      bcrypt.hash(new_user.password, salt, function(err, hash) {
+          // Store hash in your password DB.
+          if(err){
+            console.log("error in hashing");
+            console.log(err);
+          }
+          console.log("storing new user with password");
+          console.log(hash);
+          // Store hash in your password DB.
+          var stmt = db.prepare(`INSERT INTO users VALUES(?,?,?,DateTime('now'))`);
+          stmt.run(new_user.username, new_user.email, hash);
+          stmt.finalize();
+      });
+   });
+
   });
 }
 
