@@ -72,8 +72,6 @@ app.listen(portnumber, () => {
     console.log(`App is listening on localhost:${portnumber}`);
 });
 
-// TODO:SL podlinkuj każdy obrazek do strony z dokładniejszym jej opisem
-// TODO:SL przechowuj bezpiecznie hasło w bazie
 // TODO:SL nie pozwalaj na dodawanie wysyłaie obrazka bez obrazka na serwer (baza danych itp)
 
 // TODO:SL nie pozwalaj dodawania niepoprawnych danych do bazy danych

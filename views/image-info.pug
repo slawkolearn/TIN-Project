@@ -3,10 +3,9 @@ extends layout
 block content
   div.singleImageWallContainer
     if hashtags
-      p hastags
-        p.hashTags
-          each hashtag in hashtags
-            | ##{hashtag.hashtag_name} 
+      p.hashTags
+        each hashtag in hashtags
+          | ##{hashtag.hashtag_name} 
     img.wallImage(src=image.location_on_server, alt="Obrazek")
     p.imageName= `${image.name}`
     p.imageDesc= `${image.desc}`
