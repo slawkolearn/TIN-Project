@@ -6,9 +6,9 @@ const dbController = require('../controllers/databaseConnectionController');
 const localDiskController = require('../controllers/localDiskController');
 const dataValidator = require('../validators/incomingDataValidator');
 
-// dla ściezki /hello renderuj stronę powitalną
-router.get('/hello', (req, res) => {
-  res.render('hello');
+// dla ściezki /login renderuj stronę powitalną
+router.get('/login', (req, res) => {
+  res.render('login', { hide_login_button: true });
 });
 
 
@@ -29,15 +29,15 @@ router.post('/authenticateUser',
 
 // logika wylogowania
 router.post('/logout', (req, res) => {
-  // usuwamy cookie username i przekierowujemy na ścieżkę /hello
+  // usuwamy cookie username i przekierowujemy na ścieżkę /login
   res.clearCookie('username');
-  res.redirect('/hello');
+  res.redirect('/');
 });
 
 // dla ścieżki /register wywołania GET wyrenderuj stronę i ją przeslij
 // strona z formularzem do rejestracji
 router.get('/register', (req, res) => {
-  res.render('register');
+  res.render('register', { hide_login_button: true });
 });
 
 // TODO:SL dodaj przekierowanie do strony z formularzem kiedy użytkownik z username już istnieje
@@ -48,7 +48,7 @@ router.post('/register',
   localDiskController.createUserFolder,
   (req, res) => {
     console.log(req.body);
-    res.redirect('/hello');
+    res.redirect('/login');
   }
 );
 

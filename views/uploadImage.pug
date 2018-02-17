@@ -12,7 +12,13 @@ block content
     br
     label.formLabel(for="image") Wybierz plik:
     br
-    input.fileChooser(type="file", name="image", accept=".jpg, .jpeg, .png")
+    input.fileChooser(type="file", name="image", accept=".jpg, .jpeg, .png", required)
+    br
+    label(for="category")
+    select.selectCategory(required, name="category")
+      option(value="") wybierz kategorie
+      each category in categories
+        option(value=`${category.name}`) #{category.name}
     br
     button.formButton(type="submit") Wyślij!
     

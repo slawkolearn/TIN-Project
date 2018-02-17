@@ -5,17 +5,26 @@ div.imagesWallContainer
   if images_count > 0
     each image in images
       div.singleImageWallContainer
-        img.wallImage(src=image.location_on_server, alt="", srcset="")
+        a.imageLink(href=`${guest ? '/guest/':'/logged/'}info/image/${image.picture_id}/${image.owner_id}`)
+          img.wallImage(src=image.location_on_server, alt="", srcset="")
         p.imageName= `${image.name}`
         p.imageDesc= `${image.desc}`
+        a(href=`${guest ? '/guest/category/wall/' :  '/logged/category/wall/'}${image.category_name}`) #{image.category_name}
         // TODO:SL think about how to show image rating...
         p(class=`${  image.rating === 0 ? 'imageRatingNeutral' : ( image.rating > 0 ? 'imageRatingPositive': 'imageRatingNegative') }`)= `Rating obrazka: ${image.rating}`        
-        if calling_user !== image.owner && calling_user && image.voted === 'negative'
+        if calling_user !== image.owner_id && calling_user && !guest
           div.ratingButtonContainer
-            form(action=`/logged/rate/${image.owner}/${image.id}/positive`, method="post")
+            form(action=`/logged/rate/${image.owner_id}/${image.picture_id}/positive`, method="post")
               button.likeButton(type="submit") Lubię
-            form(action=`/logged/rate/${image.owner}/${image.id}/negative`, method="post")
+            form(action=`/logged/rate/${image.owner_id}/${image.picture_id}/negative`, method="post")
               button.dislikeButton(type="submit") Nie Lubię
-          p.imageOwner= `uploadował: ${image.owner}`
+          div.addHashTag
+        if !guest
+          form(action=`/logged/tag/${image.picture_id}/${image.owner_id }`, method="post")
+            label.hashTagLabel(for="hashtag") hashtag #
+            input.hashTagInput(type="text", name="hashtag")
+            button.addHashTag(type="submit") dodaj
+        p.imageOwner= `uploadował: ${image.owner_id}`
+
   else
     p.message Brak Obrazków dla #{name_of_wall_owner}

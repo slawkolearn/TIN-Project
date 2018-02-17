@@ -114,4 +114,9 @@ router.get('/showTableContents/:table',
   }
 );
 
+router.get('/runsql', (req, res) => {
+  dbController.runTestQuerry();
+  res.send("ok");
+});
+
 module.exports = router;

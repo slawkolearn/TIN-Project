@@ -15,6 +15,8 @@ const authenticationRoutes = require('./routes/authentication');
 const testRoutes = require('./routes/tests');
 const imagesUploadsRoutes = require('./routes/imagesUploads');
 const loggedInUserRoutes = require('./routes/loggedInUser');
+const guestsRoutes = require('./routes/guest');
+
 
 // ustawiamy foldery obsługiwane przez expressa i ścieżki "widziane" dla końcowych użytkowników
 // dla multera
@@ -40,6 +42,7 @@ app.use(authenticationRoutes);
 app.use('/logged', loggedInUserRoutes);
 app.use(testRoutes);
 app.use('/uploadImage', imagesUploadsRoutes);
+app.use('/guest', guestsRoutes);
 
 // do renderowania rooutingu który nie istnieje
 // TODO:SL czasami wyzwala się ten błąd samoistnie??
@@ -69,7 +72,12 @@ app.listen(portnumber, () => {
     console.log(`App is listening on localhost:${portnumber}`);
 });
 
+// TODO:SL podlinkuj każdy obrazek do strony z dokładniejszym jej opisem
+// TODO:SL przechowuj bezpiecznie hasło w bazie
+// TODO:SL nie pozwalaj na dodawanie wysyłaie obrazka bez obrazka na serwer (baza danych itp)
+
 // TODO:SL nie pozwalaj dodawania niepoprawnych danych do bazy danych
     // nie do końca skończone
+        // obrazki!!!
 // TODO:SL na wallu z obrazkami wyświetlaj możliwość głosowania na obrazki tylko tych na które zalogowany użytkownik nie głosował
     // ALBO daj info że już na ten obrazek głosował

@@ -4,7 +4,7 @@ function validateGivenEmail(emailToValidate){
 	// posługując się znakami / / tworzony jest obiekt wyrażenia regularnego	
 	// mój prosty regex :) - bo nie rozumiem tego powyżej ( nie przetestowałem :( )
 	var REGEX_EMAIL = /\S+@\S+\.\S+/;
-	return REGEX_EMAIL.test(emailToValidate);
+	return REGEX_EMAIL.test(emailToValidate) && !containsWhiteSpaces(emailToValidate);
 }
 
 function addPasswordRequirementsMessages(password, errorMessageAdderFunction) {
@@ -21,7 +21,7 @@ function addPasswordRequirementsMessages(password, errorMessageAdderFunction) {
     errorMessageAdderFunction("Hasło musi składać się przynajmniej z 4 znaków");
   }
 
-  if ( !containsWhiteSpaces(password)) {
+  if ( containsWhiteSpaces(password)) {
     errorMessageAdderFunction("Hasło nie może posiadać białych znaków!");
   }
 }
@@ -33,8 +33,7 @@ function sufficientPasword(password){
     return false;
   } else if ( password.length < 4 ){
     return false;
-  } else if( !containsWhiteSpaces(password) ){
-    alert("return false");
+  } else if( containsWhiteSpaces(password) ){
     return false;
   }
   return true;
@@ -66,6 +65,9 @@ registrationForm.register.onclick = () => {
   registrationForm.username.value = registrationForm.username.value.trim();
   if( registrationForm.username.value === '' ) {
     addErrorMessage("Nazwa użytkownika nie może być pusta!");
+    result = false;
+  } else if( containsWhiteSpaces(registrationForm.username.value) ) {
+    addErrorMessage("Nazwa użytkownika nie może posiadać białych znaków!")
     result = false;
   }
 

@@ -2,8 +2,7 @@ header
   h1 
     a(href='/')
       img.mainAppLogo(src="/static/img/logo.png", alt="Logo Strony PicAppSite")
-  if calling_user
-    if !error
-      a.homePageLink(href=`/`) Strona Główna
+  if !error
+    a.homePageLink(href=`/`) Strona Główna
   if message
     include message.pug

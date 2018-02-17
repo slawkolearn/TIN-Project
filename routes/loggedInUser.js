@@ -6,6 +6,13 @@ const helpers = require('../helpers/helpers');
 
 
 router.get('/wall/:user', 
+  (req, res, next) => {
+    if (!req.cookies.username) {
+      res.redirect(`/guest/wall/${req.params.user}`);
+    }else{
+      next();
+    }
+  },
   dbController.get_user_images_to_request,
   (req, res) => {
     console.log("WHAT I HAVE:");
@@ -31,6 +38,40 @@ router.post('/rate/:whos/:what/:how',
     res.redirect(`/logged/wall/${req.params.whos}?message=${req.body.message}`);
   }
 );
+
+router.get('/category/wall/:category_name',
+  dbController.get_images_from_given_category_to_request,
+  (req, res) =>{
+    res.render('user_wall', { images: req.body.images, name_of_wall_owner: req.params.category_name});
+  }
+);
+
+router.post('/tag/:picture_id/:image_owner', 
+dbController.create_hashtag_table_entry_if_not_exists,
+dbController.bind_picture_to_hashtag,
+(req, res) => {
+  console.log("req.body:");
+  console.log(req.body);
+  console.log("req.params");
+  console.log(req.params);
+  res.redirect(`/logged/wall/${req.params.image_owner}`);
+});
+
+router.get('/info/image/:picture_id/:user', 
+dbController.get_hashtags_for_picture_to_res_locals,
+dbController.get_picture_to_request,
+dbController.get_positive_votes_for_picture_to_res_locals,
+dbController.get_negative_votes_for_picture_to_res_locals,
+(req, res) => {
+  console.log("req.body:");
+  console.log(req.body);
+  console.log("req.params");
+  console.log(req.params);
+  console.log(req.body.images);
+  console.log("res.locals");
+  console.log(res.locals);
+  res.render('image-info', { images: req.body.images, name_of_wall_owner: req.params.user , message: req.query.message });
+});
 
 // helpers
 

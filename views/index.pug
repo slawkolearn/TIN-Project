@@ -1,12 +1,13 @@
 extends layout
 
 block content
-    h2.greetingText Witaj, #{username}!
+    h2.greetingText Witaj#{username ? ', '+username : ''}!
     ul
-        li#uploadImageItem
-            a.imageAddLink(href='/uploadImage') Dodaj obrazek
-        li#showMinePicturesItem
-            a(href=`/logged/wall/${username}`) Pokaż moje obrazki    
+        if username
+            li#uploadImageItem
+                a.imageAddLink(href='/uploadImage') Dodaj obrazek
+            li#showMinePicturesItem
+                a(href=`/logged/wall/${username}`) Pokaż moje obrazki    
         li#showOtherUsersItem
             a(href=`/logged/showUsers`) Pokaż użytkowników
     

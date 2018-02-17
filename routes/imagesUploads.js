@@ -8,7 +8,9 @@ const dbController = require('../controllers/databaseConnectionController');
 
 
 // wyświetl formularz do wysyłania obrazków
-router.get('/', (req, res) => {
+router.get('/', 
+dbController.get_categories_to_res_locals,
+(req, res) => {
   res.render('uploadImage');
 });
 
@@ -24,11 +26,12 @@ router.post('/',
         cb(null, `uploads/${req.cookies.username}`);
       },
       filename: function (req, file, cb) {
-        // TODO:SL check if there will be a problem with saving the file with polish (and other) characters
+        console.log(req.body.image);
         var imageName = req.body.name;
         if( imageName === '' || !imageName ){
           imageName = 'image';
         } 
+        console.log("image name:" + imageName);
         imageName += '-' + Date.now() + '.jpg';
         req.body.location_on_server = `/${req.cookies.username}/${imageName}`;
         // tu ustawiamy nazwę pliku taka jaka będzie na serwerze..
@@ -42,9 +45,14 @@ router.post('/',
     var upload = multer({ storage: storage }).single("image");
 
     upload(req, res, function (err) {
+      console.log("mutler upload");
       if (err) {
         // TODO:SL obsłuż błąd przy uploadowaniu pliku
         // An error occurred when uploading
+        console.log("BŁĄD PRZY DODAWANIU OBRAZKA!!!");
+        const error = new Error("Błąd przy uploadzie obrazka!");
+        error.status = 500;
+        next(error);
         return
       }
 

@@ -37,7 +37,7 @@ body {
 @media screen and ( min-width: 900px ) { 	/* jeżeli dostępna szerokość jest min 1000px  i max 1199px */
   .imagesWallContainer{ 
     display: flex;
-    flex-flow: row;
+    flex-flow: row wrap;
     justify-content: center;
   }
 }
@@ -57,16 +57,37 @@ body {
 .logoutButton{
   margin-top: 50px;
   background-color: #E4EEF0;
-  border: 2px #D64226 solid;
+  border: 2px rgb(202, 62, 34) solid;
   font-size: 1em;
   padding: 8px 10px;
-  color: #D64226;
+  color: rgb(202, 62, 34);
   font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
 }
 
 .logoutButton:hover{
-  background-color: #D64226;
-  color: #fff;
+  background-color: rgb(202, 62, 34);
+  color:  #E4EEF0;
+  cursor: pointer;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+.loginButton{
+  margin-top: 50px;
+  background-color: #E4EEF0;
+  border: 2px rgb(14, 136, 79) solid;
+  font-size: 1em;
+  padding: 8px 10px;
+  color:  rgb(14, 136, 79);
+  font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
+}
+
+
+.loginButton:hover{
+  background-color: rgb(14, 136, 79) ;
+  color:  #E4EEF0;
   cursor: pointer;
   -webkit-transition: all 0.3s;
   -moz-transition: all 0.3s;
@@ -122,6 +143,22 @@ body {
   -moz-transition: all 0.3s;
   -o-transition: all 0.3s;
   transition: all 0.3s;
+}
+
+.addHashTag{
+  margin-top: 10px;
+}
+
+.hashTagInput{
+  background: transparent;
+  border: none;
+  border-bottom: black solid 1px;
+  color: rgb(82, 64, 17);
+  margin-right: 4px;
+}
+
+.hashTagLabel{
+  font-size: 18px;
 }
 
 .mainAppLogo{
@@ -184,7 +221,7 @@ body {
 
 /* FORM */
 
-.formLabel, .message{
+.formLabel, .message, .hashTagLabel{
   color: rgb(71, 71, 71);
 }
 
@@ -222,6 +259,18 @@ body {
   color: #FFF;
 }
 
+.selectCategory{  
+  border-radius: 5px; 
+  margin-top: 20px;
+  margin-right: 5px;
+  min-width: 200px;
+  min-height: 25px;
+  text-align: center;
+  background-color: rgb(61, 61, 61);
+  color: #FFF;
+}
+
+
 
 /* header*/
 
@@ -254,6 +303,11 @@ footer{
   color:  rgb(61, 61, 61);
 }
 
+.categoryName{
+  font-size: 25px;
+  color:  rgb(61, 61, 61, 0.8);
+}
+
 .imageRatingNeutral{
   color:grey;
 }
@@ -282,15 +336,10 @@ footer{
   .wallImage{
     max-width: 400px;
   }
-}
 
-@media screen and ( min-width: 1200px ){		
-  .wallImage{
-    max-width: 500px;
-  }
-}
 
 .message{
   color:rgba(53, 34, 124, 0.8);
   font-size: 25px;
 }
+

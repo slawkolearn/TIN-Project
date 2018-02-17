@@ -11,7 +11,7 @@ router.get('/', (req, res) => {
       console.log(req.query.message);
       res.render('index',  { username: req.cookies.username, message: req.query.message } );
   }else{
-      res.redirect('/hello');
+      res.redirect('/guest');
   }
 });
 

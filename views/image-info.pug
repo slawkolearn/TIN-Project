@@ -1,0 +1,29 @@
+extends layout
+
+block content
+  div.singleImageWallContainer
+    if hashtags
+      p hastags
+        p.hashTags
+          each hashtag in hashtags
+            | ##{hashtag.hashtag_name} 
+    img.wallImage(src=image.location_on_server, alt="Obrazek")
+    p.imageName= `${image.name}`
+    p.imageDesc= `${image.desc}`
+    a(href=`${guest ? '/guest/category/wall/' :  '/logged/category/wall/'}${image.category_name}`) #{image.category_name}
+    // TODO:SL think about how to show image rating...
+    p(class=`${  image.rating === 0 ? 'imageRatingNeutral' : ( image.rating > 0 ? 'imageRatingPositive': 'imageRatingNegative') }`)= `Rating obrazka: ${image.rating}`        
+    p.imageRatingPositive Głosów pozytywnych: #{positive_count.positive_count}
+    p.imageRatingNegative Głosów negatywnych: #{negative_count.negative_count}
+    if calling_user !== image.owner_id && calling_user && !guest
+      div.ratingButtonContainer
+        form(action=`/logged/rate/${image.owner_id}/${image.picture_id}/positive`, method="post")
+          button.likeButton(type="submit") Lubię
+        form(action=`/logged/rate/${image.owner_id}/${image.picture_id}/negative`, method="post")
+          button.dislikeButton(type="submit") Nie Lubię
+      div.addHashTag
+        form(action=`/logged/tag/${image.picture_id}/${image.owner_id }`, method="post")
+          label.hashTagLabel(for="hashtag") hashtag #
+          input.hashTagInput(type="text", name="hashtag")
+          button.addHashTag(type="submit") dodaj
+      p.imageOwner= `uploadował: ${image.owner_id}`

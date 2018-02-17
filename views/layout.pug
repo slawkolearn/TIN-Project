@@ -5,10 +5,15 @@ html(lang="pl")
     link(rel="stylesheet", href="/static/css/style.css")
     block headSpace
   body
-    if calling_user   
-      if !error
+    if !error
+      if calling_user   
         form(action="/logout", method="post")
           button.logoutButton(type="submit") Wyloguj #{calling_user}
+      else
+        if !hide_login_button
+          form(action="/login", method="get")
+            button.loginButton(type="submit") Zaloguj się
+      
     include includes/header.pug
     div.mainContent
       block content
